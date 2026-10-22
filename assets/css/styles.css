@@ -65,6 +65,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 80px;
   text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -244,21 +245,25 @@ button, input, select, textarea {
   display: none;
 }
 
-/* Brand Avatar Görseli (Header & Footer) */
-.brand-avatar-img {
+/* Brand Avatar & Logo Görseli (Header, Drawer, Footer) */
+.brand-avatar-img,
+.brand-logo-img {
   width: 42px;
   height: 42px;
   border-radius: 50%;
-  object-fit: cover;
-  object-position: center 15%;
-  border: 2px solid var(--rose-400);
+  object-fit: contain;
+  background: #FFFFFF;
+  border: 1.5px solid var(--rose-400);
+  padding: 1px;
   box-shadow: 0 4px 12px rgba(224, 90, 126, 0.25);
   flex-shrink: 0;
-  transition: transform var(--duration-fast) var(--ease-spring);
+  transition: transform var(--duration-fast) var(--ease-spring), box-shadow var(--duration-fast) ease;
 }
 
-.brand-link:hover .brand-avatar-img {
+.brand-link:hover .brand-avatar-img,
+.brand-link:hover .brand-logo-img {
   transform: scale(1.06);
+  box-shadow: 0 6px 18px rgba(224, 90, 126, 0.35);
 }
 
 /* Container - Merkezli ve Dengeli Grid Koruması */
@@ -1001,6 +1006,21 @@ button, input, select, textarea {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+@media (max-width: 520px) {
+  .service-footer {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+    gap: 14px;
+  }
+  .service-footer .btn {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /* ===================================================================
@@ -2017,19 +2037,22 @@ button, input, select, textarea {
   opacity: 0.92;
 }
 
-.footer-brand-avatar {
-  width: 48px;
-  height: 48px;
+.footer-brand-avatar,
+.footer-brand-logo {
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
-  object-fit: cover;
-  object-position: center 15%;
+  object-fit: contain;
+  background: #FFFFFF;
   border: 2px solid var(--rose-400);
+  padding: 2px;
   box-shadow: 0 4px 14px rgba(224, 90, 126, 0.2);
   flex-shrink: 0;
   transition: transform var(--duration-fast) var(--ease-spring);
 }
 
-.footer-brand-link:hover .footer-brand-avatar {
+.footer-brand-link:hover .footer-brand-avatar,
+.footer-brand-link:hover .footer-brand-logo {
   transform: scale(1.06);
 }
 
@@ -2577,12 +2600,13 @@ button, input, select, textarea {
   }
 
   .mobile-drawer-avatar {
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
-    object-fit: cover;
-    object-position: center 15%;
+    object-fit: contain;
+    background: #FFFFFF;
     border: 2px solid var(--rose-400);
+    padding: 2px;
     box-shadow: 0 4px 12px rgba(224, 90, 126, 0.2);
     flex-shrink: 0;
   }
@@ -2730,8 +2754,20 @@ button, input, select, textarea {
   :root {
     --header-height: 68px;
   }
-  .nav-actions .btn-whatsapp,
+  .nav-actions .btn-whatsapp {
+    display: none;
+  }
   .nav-actions .btn-primary {
+    display: inline-flex !important;
+    padding: 7px 13px !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    border-radius: 9999px !important;
+    box-shadow: 0 3px 12px rgba(224, 90, 126, 0.35) !important;
+    white-space: nowrap !important;
+    letter-spacing: 0.01em;
+  }
+  .nav-actions .btn-primary .btn-nested-icon {
     display: none;
   }
   .services-grid {
@@ -2792,11 +2828,14 @@ button, input, select, textarea {
   }
   .brand-name {
     font-size: 0.9375rem;
+    white-space: nowrap;
   }
   .brand-title {
     font-size: 0.65625rem;
+    white-space: nowrap;
   }
-  .brand-avatar-img {
+  .brand-avatar-img,
+  .brand-logo-img {
     width: 36px;
     height: 36px;
   }
@@ -2816,6 +2855,50 @@ button, input, select, textarea {
   .hero-section {
     padding-top: calc(var(--header-height) + 16px);
     padding-bottom: 48px;
+  }
+}
+
+@media (max-width: 380px) {
+  .site-header {
+    padding: 0 6px;
+  }
+  .nav-island {
+    padding: 5px 8px;
+    gap: 6px;
+  }
+  .brand-wrapper {
+    gap: 6px;
+  }
+  .brand-name {
+    font-size: 0.84375rem;
+  }
+  .brand-title {
+    font-size: 0.625rem;
+  }
+  .brand-avatar-img,
+  .brand-logo-img {
+    width: 32px;
+    height: 32px;
+  }
+  .nav-actions {
+    gap: 4px;
+  }
+  .nav-actions .btn-primary {
+    padding: 6px 9px !important;
+    font-size: 0.6875rem !important;
+  }
+  .mobile-menu-toggle {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+@media (max-width: 330px) {
+  .brand-title {
+    display: none;
+  }
+  .brand-name {
+    font-size: 0.78125rem;
   }
 }
 
@@ -3268,5 +3351,188 @@ button, input, select, textarea {
   }
   .schema-compass-wrapper {
     padding: 28px 20px;
+  }
+}
+
+/* ===================================================================
+   LÜKS VE YÜKSEK ÖNCELİKLİ RANDEVU BUTONU & DOKTORSİTESİ ENTEGRASYONU
+   =================================================================== */
+.btn-randevu-highlight {
+  background: linear-gradient(135deg, #E05A7E 0%, #B83256 100%) !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em;
+  box-shadow: 0 4px 18px rgba(224, 90, 126, 0.42), inset 0 1px 1px rgba(255, 255, 255, 0.35) !important;
+  position: relative;
+  overflow: hidden;
+  transition: all var(--duration-fast) var(--ease-spring) !important;
+}
+
+.btn-randevu-highlight:hover {
+  background: linear-gradient(135deg, #C43B62 0%, #9E1F42 100%) !important;
+  box-shadow: 0 8px 26px rgba(224, 90, 126, 0.55), inset 0 1px 1px rgba(255, 255, 255, 0.45) !important;
+  transform: translateY(-2px);
+  color: #FFFFFF !important;
+}
+
+/* Doktorsitesi Online Takvim Kartı */
+.doktorsitesi-booking-card {
+  background: linear-gradient(145deg, #FFFFFF, rgba(253, 242, 244, 0.85));
+  border: 1.5px solid rgba(224, 90, 126, 0.28);
+  border-radius: 20px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 8px 24px rgba(74, 45, 52, 0.06);
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.doktorsitesi-booking-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #00A896, #E05A7E);
+}
+
+.doktorsitesi-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.doktorsitesi-badge-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.doktorsitesi-icon-box {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: #E6F7F5;
+  color: #00A896;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.1rem;
+  box-shadow: 0 3px 10px rgba(0, 168, 150, 0.18);
+  flex-shrink: 0;
+}
+
+.doktorsitesi-title-group h4 {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  margin: 0 0 2px 0;
+  line-height: 1.25;
+}
+
+.doktorsitesi-title-group span {
+  font-size: 0.78125rem;
+  color: #00A896;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.doktorsitesi-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+  margin: 16px 0 20px 0;
+}
+
+.doktorsitesi-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+}
+
+.doktorsitesi-feature-item svg {
+  color: #00A896;
+  flex-shrink: 0;
+}
+
+.btn-doktorsitesi {
+  background: linear-gradient(135deg, #00A896, #028090);
+  color: #FFFFFF !important;
+  border: none;
+  padding: 12px 22px;
+  font-weight: 600;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(0, 168, 150, 0.3);
+  transition: all var(--duration-fast) var(--ease-spring);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn-doktorsitesi:hover {
+  background: linear-gradient(135deg, #028090, #006b77);
+  box-shadow: 0 6px 20px rgba(0, 168, 150, 0.45);
+  transform: translateY(-2px);
+  color: #FFFFFF !important;
+}
+
+.appointment-channels-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 22px 0;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.appointment-channels-divider::before,
+.appointment-channels-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--border-hairline);
+}
+
+.appointment-channels-divider:not(:empty)::before {
+  margin-right: 14px;
+}
+
+.appointment-channels-divider:not(:empty)::after {
+  margin-left: 14px;
+}
+
+@media (max-width: 640px) {
+  .doktorsitesi-booking-card {
+    padding: 18px 16px;
+  }
+  .doktorsitesi-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .doktorsitesi-features {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin: 12px 0 16px 0;
+  }
+  .btn-doktorsitesi {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.84375rem;
+    padding: 11px 16px;
+    text-align: center;
+    white-space: normal;
   }
 }

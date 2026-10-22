@@ -438,7 +438,7 @@ window.submitAppointment = function(channel) {
 
   // Panoya kopyalama için saf metin şablonu
   lastAppointmentRawText = 
-`Klinik Psikolog Yaren Kiraz Güller - Randevu Talebi
+`Uzman Klinik Psikolog Yaren Kiraz Güller - Randevu Talebi
 • Danışan: ${fullName}
 • Telefon: ${phone}
 • Terapi Türü: ${service}
@@ -448,13 +448,13 @@ Kliniğiniz tarafından değerlendirilip uygun seans planlaması için tarafıma
 
   if (channel === 'whatsapp') {
     const waText = 
-`Merhaba Klinik Psikolog Yaren Kiraz Güller,\n\nWeb siteniz üzerinden bir *randevu talebi* oluşturdum:\n- *Danışan:* ${fullName}\n- *Telefon:* ${phone}\n- *Tercih Edilen Hizmet:* ${service}\n- *Seans Şekli:* ${sessionFormat}\n${email ? `- *E-Posta:* ${email}\n` : ''}${notes ? `- *Not / Uygunluk:* ${notes}\n` : ''}\nKliniğiniz tarafından değerlendirilip uygun randevu planlaması için dönüş yapılmasını rica ederim.`;
+`Merhaba Uzman Klinik Psikolog Yaren Kiraz Güller,\n\nWeb siteniz üzerinden bir *randevu talebi* oluşturdum:\n- *Danışan:* ${fullName}\n- *Telefon:* ${phone}\n- *Tercih Edilen Hizmet:* ${service}\n- *Seans Şekli:* ${sessionFormat}\n${email ? `- *E-Posta:* ${email}\n` : ''}${notes ? `- *Not / Uygunluk:* ${notes}\n` : ''}\nKliniğiniz tarafından değerlendirilip uygun randevu planlaması için dönüş yapılmasını rica ederim.`;
     lastAppointmentWaUrl = `https://wa.me/905441852209?text=${encodeURIComponent(waText)}`;
     window.open(lastAppointmentWaUrl, '_blank');
   } else {
     const subject = `Randevu Talebi - ${fullName} (${service})`;
     const body = 
-`Merhaba Klinik Psikolog Yaren Kiraz Güller,\n\nWeb siteniz üzerinden randevu talebinde bulunmak istiyorum:\n\n• Danışan Adı Soyadı: ${fullName}\n• Telefon Numarası: ${phone}\n• Danışmanlık / Terapi Türü: ${service}\n• Seans Şekli: ${sessionFormat}\n${email ? `• E-Posta: ${email}\n` : ''}${notes ? `• Not / Uygunluk Durumu: ${notes}\n` : ''}\n\nTalebin kliniğiniz tarafından değerlendirilip uygun randevu planlaması için tarafıma dönüş yapılmasını rica ederim.\n\nSaygılarımla,\n${fullName}`;
+`Merhaba Uzman Klinik Psikolog Yaren Kiraz Güller,\n\nWeb siteniz üzerinden randevu talebinde bulunmak istiyorum:\n\n• Danışan Adı Soyadı: ${fullName}\n• Telefon Numarası: ${phone}\n• Danışmanlık / Terapi Türü: ${service}\n• Seans Şekli: ${sessionFormat}\n${email ? `• E-Posta: ${email}\n` : ''}${notes ? `• Not / Uygunluk Durumu: ${notes}\n` : ''}\n\nTalebin kliniğiniz tarafından değerlendirilip uygun randevu planlaması için tarafıma dönüş yapılmasını rica ederim.\n\nSaygılarımla,\n${fullName}`;
     lastAppointmentMailtoUrl = `mailto:info@yarenkiraz.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     window.location.href = lastAppointmentMailtoUrl;
   }
