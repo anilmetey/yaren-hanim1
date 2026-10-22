@@ -522,7 +522,7 @@ const SAFE_PLACE_STEPS = {
   1: {
     num: 1,
     title: "1. Adım: Güvenli Alanını Zihninde Canlandır (Gör)",
-    badge: "🌿 Zihninde tamamen güvende, korunaklı ve sakin hissettiğin bir yer seç",
+    badge: "Zihninde tamamen güvende, korunaklı ve sakin hissettiğin bir yer seç",
     desc: "Burası daha önce huzur bulduğun sakin bir kumsal, çam kokulu bir orman, çocukluğundan sıcak bir oda veya tamamen zihninde yarattığın hayali bir sığınak olabilir. Gözlerini hafifçe kapat veya ekrana yumuşakça odaklan. Çevrende hangi renkleri, ışıkları ve ayrıntıları görüyorsun? Bu alanda yalnızca sen varsın ve tamamen güvendesin.",
     tags: ["Sakin Deniz Kenarı", "Çam Ormanı", "Sıcak Bir Oda", "Göl Kıyısı", "Yıldızlı Gökyüzü"],
     stepText: "Adım 1 / 4 — Görsel Canlandırma"
@@ -530,7 +530,7 @@ const SAFE_PLACE_STEPS = {
   2: {
     num: 2,
     title: "2. Adım: Huzurun Seslerine Odaklan (İşit)",
-    badge: "🌊 Bu korunaklı alanda kulağına hangi sakinleştirici sesler geliyor?",
+    badge: "Bu korunaklı alanda kulağına hangi sakinleştirici sesler geliyor?",
     desc: "Kıyıya vuran dalgaların yumuşak ritmi mi, ağaçların yaprakları arasından süzülen ılık rüzgar mı, uzaktaki dingin kuş sesleri mi, yoksa seni sarıp sarmalayan huzurlu bir sessizlik mi? Bu seslerin zihnindeki tüm karmaşayı ve gürültüyü nasıl yavaşlattığına izin ver.",
     tags: ["Dalga Hışırtısı", "Hafif Esinti", "Kuş Cıvıltıları", "Dingin Sessizlik", "Yağmur Sesi"],
     stepText: "Adım 2 / 4 — İşitsel Farkındalık"
@@ -538,7 +538,7 @@ const SAFE_PLACE_STEPS = {
   3: {
     num: 3,
     title: "3. Adım: Bedensel Teması ve Isıyı Fark Et (Hisset)",
-    badge: "☀️ Tenine değen ısı nasıl? Bedeninde nerede bir gevşeme hissediyorsun?",
+    badge: "Tenine değen ısı nasıl? Bedeninde nerede bir gevşeme hissediyorsun?",
     desc: "Ayaklarının altındaki zemine odaklan; yumuşak kumlar mı, serin çimenler mi, yoksa sıcak bir battaniye mi? Tenine dokunan ferahlatıcı esintiyi veya ılık güneşi fark et. Burnundan sakin bir nefes alıp yavaşça verirken omuzlarının, boynunun ve çene kaslarının nasıl gevşeyip rahatladığını duyumsayın.",
     tags: ["Ilık Güneş Işığı", "Yumuşak Dokunuş", "Ferahlatıcı Hava", "Gevşeyen Omuzlar"],
     stepText: "Adım 3 / 4 — Somatik Gevşeme"
@@ -546,7 +546,7 @@ const SAFE_PLACE_STEPS = {
   4: {
     num: 4,
     title: "4. Adım: Bu Huzuru Bedeninde Mühürle (Çıpalama)",
-    badge: "🦋 Kelebek Kucaklaması ile bu güven duygusunu sinir sistemine kaydet",
+    badge: "Kelebek Kucaklaması ile bu güven duygusunu sinir sistemine kaydet",
     desc: "Şimdi kollarını göğsünün üzerinde çaprazla ve parmak uçlarını omuzlarına yerleştir (Kelebek Kucaklaması). Aşağıdaki ritme uyarak sağ ve sol elinle sırayla çok hafifçe omuzlarına vur: Sol... Sağ... Sol... Sağ... Bu güvenli hissi tanımlayan tek bir kelime seç (örneğin 'Huzur', 'Güvendeyim') ve 3 derin nefesle bu anı içine çek.",
     tags: ["Kelebek Kucaklaması", "İki Yönlü Uyarım", "Kelime Çıpası: 'Huzur'"],
     hasBilateral: true,
@@ -599,11 +599,11 @@ function initGroundingExercise() {
         bilateralHtml = `
           <div class="butterfly-tapping-box" aria-label="Kelebek Kucaklaması İki Yönlü Uyarım">
             <div class="butterfly-wing pulse-left">
-              <span>🦋</span>
+              <span class="tapping-side-indicator">L</span>
               <span>Sol Omuz</span>
             </div>
             <div class="butterfly-wing pulse-right">
-              <span>🦋</span>
+              <span class="tapping-side-indicator">R</span>
               <span>Sağ Omuz</span>
             </div>
           </div>
@@ -834,14 +834,13 @@ function initSchemaCompass() {
         <p class="schema-result-desc">${data.desc}</p>
         <div class="schema-voice-box">
           <div class="schema-voice-header">
-            <span>🌿</span>
             <span>Sağlıklı Yetişkinin Şefkatli Sesi Diyor ki:</span>
           </div>
           <p class="schema-voice-quote">"${data.voice}"</p>
         </div>
         <div class="schema-cta-row">
-          <a href="iletisim.html" class="btn btn-primary" style="padding: 11px 22px; font-size: 0.875rem;">
-            <span>Bu Şemalarınızı Güvenli Bir Alanda Dönüştürmek İçin Randevu Alın</span>
+          <a href="iletisim.html" class="btn btn-primary" style="padding: 12px 28px; font-size: 0.9375rem;">
+            <span>Randevu Alın</span>
             <span class="btn-nested-icon" aria-hidden="true">→</span>
           </a>
         </div>
