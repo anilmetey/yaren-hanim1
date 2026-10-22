@@ -749,17 +749,6 @@ function initSplashScreen() {
   const splash = document.getElementById('splash-screen');
   if (!splash) return;
 
-  // Oturum boyunca sadece 1 kez göster (Kullanıcı aynı sekmede gezerken her seferinde beklemesin)
-  try {
-    if (sessionStorage.getItem('ykg_splash_shown')) {
-      splash.style.display = 'none';
-      return;
-    }
-    sessionStorage.setItem('ykg_splash_shown', 'true');
-  } catch (e) {
-    // sessionStorage erişim hatası (Safari private mode vb.) durumunda güvenli devam
-  }
-
   function dismissSplash() {
     if (splash.classList.contains('fade-out')) return;
     splash.classList.add('fade-out');
@@ -768,8 +757,8 @@ function initSplashScreen() {
     }, 800);
   }
 
-  // 1.4 saniye sonra yumuşak kayboluş
-  const autoDismiss = setTimeout(dismissSplash, 1400);
+  // 1.5 saniye sonra lüks ve yumuşak kayboluş
+  const autoDismiss = setTimeout(dismissSplash, 1500);
 
   // Ziyaretçi beklemek istemezse tıklayarak anında geçebilir
   splash.addEventListener('click', () => {
