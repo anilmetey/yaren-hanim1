@@ -27,34 +27,50 @@ document.addEventListener('DOMContentLoaded', () => {
 function initMobileMenu() {
   const toggleBtn = document.querySelector('.mobile-menu-toggle');
   const drawer = document.querySelector('.mobile-drawer');
+  const overlay = document.querySelector('.mobile-drawer-overlay');
+  const closeBtn = document.querySelector('.mobile-drawer-close');
   const drawerLinks = document.querySelectorAll('.mobile-drawer-link');
 
-  if (!toggleBtn || !drawer) return;
-
-  function toggleMenu() {
-    const isOpen = drawer.classList.contains('open');
-    if (isOpen) {
-      closeMenu();
-    } else {
-      openMenu();
-    }
-  }
+  if (!drawer) return;
 
   function openMenu() {
     drawer.classList.add('open');
-    toggleBtn.classList.add('open');
-    toggleBtn.setAttribute('aria-expanded', 'true');
+    if (overlay) overlay.classList.add('open');
+    if (toggleBtn) {
+      toggleBtn.classList.add('open');
+      toggleBtn.setAttribute('aria-expanded', 'true');
+    }
     document.body.style.overflow = 'hidden';
   }
 
   function closeMenu() {
     drawer.classList.remove('open');
-    toggleBtn.classList.remove('open');
-    toggleBtn.setAttribute('aria-expanded', 'false');
+    if (overlay) overlay.classList.remove('open');
+    if (toggleBtn) {
+      toggleBtn.classList.remove('open');
+      toggleBtn.setAttribute('aria-expanded', 'false');
+    }
     document.body.style.overflow = '';
   }
 
-  toggleBtn.addEventListener('click', toggleMenu);
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (drawer.classList.contains('open')) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    });
+  }
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closeMenu);
+  }
+
+  if (overlay) {
+    overlay.addEventListener('click', closeMenu);
+  }
 
   drawerLinks.forEach(link => {
     link.addEventListener('click', () => {
@@ -494,27 +510,9 @@ function initScrollProgressBar() {
    9. GELİŞMİŞ SCROLL REVEAL ANİMASYONLARI
    =================================================================== */
 function initScrollReveal() {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.querySelectorAll('.reveal-on-scroll').forEach(el => el.classList.add('is-revealed'));
-    return;
-  }
-
+  // Tüm kayma animasyonları kapatıldı; içerikler sabit, net ve oturaklı yüklenir
   const revealElements = document.querySelectorAll('.reveal-on-scroll');
-  if (revealElements.length === 0) return;
-
-  const revealObserver = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-revealed');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, {
-    threshold: 0.1,
-    rootMargin: '0px 0px -30px 0px'
-  });
-
-  revealElements.forEach(el => revealObserver.observe(el));
+  revealElements.forEach(el => el.classList.add('is-revealed'));
 }
 
 /* ===================================================================
