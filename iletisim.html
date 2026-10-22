@@ -348,66 +348,141 @@
 
               <div id="form-feedback" class="form-feedback-box" role="alert"></div>
 
-              <form id="appointment-form" class="appointment-form" novalidate>
-                <div class="form-group-row">
-                  <div class="form-field">
-                    <label for="full-name" class="form-label">İsim Soyisim <span class="required-mark">*</span></label>
-                    <input type="text" id="full-name" class="form-input" placeholder="Adınız ve Soyadınız" required autocomplete="name">
+              <div id="booking-steps-wrapper">
+                <!-- 1. FORM VIEW -->
+                <div id="booking-form-view">
+                  <form id="appointment-form" class="appointment-form" novalidate>
+                    <div class="form-group-row">
+                      <div class="form-field">
+                        <label for="full-name" class="form-label">İsim Soyisim <span class="required-mark">*</span></label>
+                        <input type="text" id="full-name" class="form-input" placeholder="Adınız ve Soyadınız" required autocomplete="name">
+                      </div>
+                      <div class="form-field">
+                        <label for="phone" class="form-label">Telefon Numarası <span class="required-mark">*</span></label>
+                        <input type="tel" id="phone" class="form-input" placeholder="0544 185 22 09" required autocomplete="tel">
+                      </div>
+                    </div>
+
+                    <div class="form-group-row">
+                      <div class="form-field">
+                        <label for="service-type" class="form-label">İlgilenilen Terapi Türü</label>
+                        <select id="service-type" class="form-select">
+                          <option value="Yetişkin Terapisi (EMDR, Şema, BDT)">Yetişkin Terapisi (EMDR, Şema, BDT)</option>
+                          <option value="Çocuk ve Ergen Oyun Terapisi">Çocuk ve Ergen Oyun Terapisi</option>
+                          <option value="Çocuk & Ergen EMDR">Çocuk &amp; Ergen EMDR</option>
+                          <option value="Aile Danışmanlığı & Ebeveyn Rehberliği">Aile Danışmanlığı &amp; Ebeveyn Rehberliği</option>
+                          <option value="Kararsızım / Uzman Önerisi İstiyorum">Kararsızım / Uzman Önerisi İstiyorum</option>
+                        </select>
+                      </div>
+                      <div class="form-field">
+                        <label for="session-format" class="form-label">Tercih Edilen Seans Şekli</label>
+                        <select id="session-format" class="form-select">
+                          <option value="Yüz Yüze (Levent Kliniği)">Yüz Yüze (Levent Kliniği)</option>
+                          <option value="Online Seans (Görüntülü Görüşme)">Online Seans (Görüntülü Görüşme)</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-field">
+                      <label for="email" class="form-label">E-Posta Adresi (İsteğe Bağlı)</label>
+                      <input type="email" id="email" class="form-input" placeholder="ornek@alanadi.com" autocomplete="email">
+                    </div>
+
+                    <div class="form-field">
+                      <label for="notes" class="form-label">Kısaca Başvuru Sebebi veya Notunuz</label>
+                      <textarea id="notes" class="form-textarea" placeholder="Hassas sağlık verisi girmeden genel başvuru nedeninizi veya uygun olduğunuz gün/saat dilimini belirtebilirsiniz."></textarea>
+                    </div>
+
+                    <div style="background: rgba(224, 90, 126, 0.05); border: 1px solid rgba(224, 90, 126, 0.16); border-radius: 12px; padding: 12px 14px; margin-bottom: 6px;">
+                      <p style="font-size: 0.78125rem; color: var(--text-secondary); line-height: 1.55;">
+                        <strong>6698 Sayılı KVKK Güvencesi:</strong> İlettiğiniz bilgiler yalnızca seans randevunuzun koordine edilmesi amacıyla sınırlı olarak işlenir; üçüncü taraflarla asla paylaşılmaz. Lütfen hassas tıbbi tanı/ilaç bilgilerinizi bu ön forma yazmayınız.
+                      </p>
+                    </div>
+
+                    <label class="form-checkbox-label">
+                      <input type="checkbox" id="kvkk-consent" required>
+                      <span>
+                        <a href="#" class="open-kvkk-modal" style="text-decoration: underline; color: var(--rose-700); font-weight: 600;">6698 Sayılı KVKK Aydınlatma Metni</a>'ni okudum, kişisel verilerimin randevu organizasyonu kapsamında işlenmesini onaylıyorum. <span class="required-mark">*</span>
+                      </span>
+                    </label>
+
+                    <!-- Gönderim Kanalları (bursapsikologum.com Modeli) -->
+                    <div class="appointment-submit-grid">
+                      <button type="button" class="btn btn-whatsapp appointment-action-btn" onclick="submitAppointment('whatsapp')">
+                        <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.077-1.127-.062-.265-.085-.595-.207-1.03-.397-1.848-.806-3.055-2.677-3.147-2.8-.093-.123-.746-.992-.746-1.893 0-.901.472-1.344.641-1.528.169-.184.368-.23.491-.23.123 0 .245.002.353.007.113.005.263-.043.412.316.153.37.521 1.272.568 1.365.046.092.077.2.015.323s-.092.2-.184.308c-.092.107-.193.24-.276.323-.092.093-.189.194-.082.378.107.184.478.788 1.026 1.274.706.628 1.3.822 1.485.914.184.092.292.077.4-.046.108-.123.461-.538.584-.723.123-.184.246-.153.415-.092.169.061 1.077.508 1.261.6.184.092.307.138.353.215.046.077.046.446-.098.851z"/>
+                        </svg>
+                        <span>WhatsApp ile Hızlı İlet</span>
+                        <span class="btn-nested-icon" aria-hidden="true">→</span>
+                      </button>
+
+                      <button type="button" class="btn btn-primary appointment-action-btn" onclick="submitAppointment('email')">
+                        <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                        </svg>
+                        <span>E-Posta ile Randevu Talebi İlet</span>
+                        <span class="btn-nested-icon" aria-hidden="true">→</span>
+                      </button>
+                    </div>
+
+                    <p class="appointment-dispatch-note">
+                      * Butona tıkladığınızda randevu metniniz hazır taslak olarak açılır. Talebinizin kliniğimize ulaşması için açılan ekranda <strong>&ldquo;Gönder&rdquo;</strong> tuşuna basmanız gerekmektedir.
+                    </p>
+                  </form>
+                </div>
+
+                <!-- 2. PENDING DISPATCH CONFIRMATION (Truthful & User-Controlled) -->
+                <div id="booking-step-success" class="booking-success-view hidden" aria-live="polite">
+                  <div class="booking-success-icon-wrap">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                    </svg>
+                    <span class="booking-pulse-badge"></span>
                   </div>
-                  <div class="form-field">
-                    <label for="phone" class="form-label">Telefon Numarası <span class="required-mark">*</span></label>
-                    <input type="tel" id="phone" class="form-input" placeholder="0544 185 22 09" required autocomplete="tel">
+
+                  <div class="booking-success-header">
+                    <span class="booking-success-tag">Son Adım: Gönderme Onayı Bekleniyor</span>
+                    <h4 class="booking-success-title">Randevu Taslağınız Hazırlandı</h4>
+                    <p class="booking-success-desc" id="pending-desc">
+                      Randevu talebi metniniz uygulamanıza aktarıldı.
+                    </p>
+                  </div>
+
+                  <div class="booking-warning-box">
+                    <div class="booking-warning-head">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                        <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                      </svg>
+                      <span>Talebinizin Kliniğe Ulaşması İçin:</span>
+                    </div>
+                    <p class="booking-warning-text">
+                      Lütfen açılan uygulamada <strong>&ldquo;GÖNDER&rdquo;</strong> butonuna basarak randevu talebinizi iletiniz. <strong>Göndermediğiniz veya taslakta beklettiğiniz sürece talebiniz kliniğimize ulaşmaz.</strong>
+                    </p>
+                  </div>
+
+                  <div class="booking-success-actions">
+                    <button type="button" onclick="reopenAppointmentDispatch()" class="btn btn-primary" style="padding: 11px 20px; font-size: 0.8125rem;">
+                      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                      </svg>
+                      <span>Uygulamayı Tekrar Aç</span>
+                    </button>
+
+                    <button type="button" onclick="copyAppointmentText()" class="btn btn-secondary" style="padding: 11px 20px; font-size: 0.8125rem;">
+                      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                      </svg>
+                      <span id="copy-btn-label">Metni Kopyala</span>
+                    </button>
+
+                    <button type="button" onclick="returnToBookingForm()" class="btn btn-outline" style="padding: 11px 20px; font-size: 0.8125rem; border: 1px solid var(--border-medium); color: var(--text-secondary); background: transparent; border-radius: 9999px;">
+                      <span>← Bilgileri Düzenle / Forma Dön</span>
+                    </button>
                   </div>
                 </div>
-
-                <div class="form-group-row">
-                  <div class="form-field">
-                    <label for="service-type" class="form-label">İlgilenilen Terapi Türü</label>
-                    <select id="service-type" class="form-select">
-                      <option value="Yetişkin Terapisi (EMDR, Şema, BDT)">Yetişkin Terapisi (EMDR, Şema, BDT)</option>
-                      <option value="Çocuk ve Ergen Oyun Terapisi">Çocuk ve Ergen Oyun Terapisi</option>
-                      <option value="Çocuk & Ergen EMDR">Çocuk &amp; Ergen EMDR</option>
-                      <option value="Aile Danışmanlığı & Ebeveyn Rehberliği">Aile Danışmanlığı &amp; Ebeveyn Rehberliği</option>
-                      <option value="Kararsızım / Uzman Önerisi İstiyorum">Kararsızım / Uzman Önerisi İstiyorum</option>
-                    </select>
-                  </div>
-                  <div class="form-field">
-                    <label for="session-format" class="form-label">Tercih Edilen Seans Şekli</label>
-                    <select id="session-format" class="form-select">
-                      <option value="Yüz Yüze (Levent Kliniği)">Yüz Yüze (Levent Kliniği)</option>
-                      <option value="Online Seans (Görüntülü Görüşme)">Online Seans (Görüntülü Görüşme)</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="form-field">
-                  <label for="email" class="form-label">E-Posta Adresi (İsteğe Bağlı)</label>
-                  <input type="email" id="email" class="form-input" placeholder="ornek@alanadi.com" autocomplete="email">
-                </div>
-
-                <div class="form-field">
-                  <label for="notes" class="form-label">Kısaca Başvuru Sebebi veya Notunuz</label>
-                  <textarea id="notes" class="form-textarea" placeholder="Hassas sağlık verisi girmeden genel başvuru nedeninizi veya uygun olduğunuz gün/saat dilimini belirtebilirsiniz."></textarea>
-                </div>
-
-                <div style="background: rgba(224, 90, 126, 0.05); border: 1px solid rgba(224, 90, 126, 0.16); border-radius: 12px; padding: 12px 14px; margin-bottom: 6px;">
-                  <p style="font-size: 0.78125rem; color: var(--text-secondary); line-height: 1.55;">
-                    <strong>6698 Sayılı KVKK Güvencesi:</strong> İlettiğiniz bilgiler yalnızca seans randevunuzun koordine edilmesi amacıyla sınırlı olarak işlenir; üçüncü taraflarla asla paylaşılmaz. Lütfen hassas tıbbi tanı/ilaç bilgilerinizi bu ön forma yazmayınız.
-                  </p>
-                </div>
-
-                <label class="form-checkbox-label">
-                  <input type="checkbox" id="kvkk-consent" required>
-                  <span>
-                    <a href="#" class="open-kvkk-modal" style="text-decoration: underline; color: var(--rose-700); font-weight: 600;">6698 Sayılı KVKK Aydınlatma Metni</a>'ni okudum, kişisel verilerimin randevu organizasyonu kapsamında işlenmesini onaylıyorum. <span class="required-mark">*</span>
-                  </span>
-                </label>
-
-                <button type="submit" id="form-submit-btn" class="btn btn-primary" style="width: 100%; padding: 14px; font-size: 0.9375rem;">
-                  <span>Randevu Talebini Gönder</span>
-                  <span class="btn-nested-icon" aria-hidden="true">→</span>
-                </button>
-              </form>
+              </div>
 
             </div>
           </div>
@@ -417,6 +492,43 @@
       </div>
     </section>
   </main>
+
+  <!-- ===============================================================
+       GÖNDERİM KANALI SEÇİM MODAL (Enter veya Hızlı Seçim İçin)
+       =============================================================== -->
+  <div id="dispatch-choice-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="dispatch-choice-title">
+    <div class="modal-container" style="max-width: 440px; text-align: center;">
+      <button id="dispatch-choice-close-btn" class="modal-close-btn" aria-label="Kapat">✕</button>
+      <div class="eyebrow-badge" style="margin-bottom: 12px;">Gönderim Kanalı Seçimi</div>
+      <h3 id="dispatch-choice-title" class="modal-title" style="font-size: 1.35rem; margin-bottom: 8px;">Talebinizi Nasıl İletmek İstersiniz?</h3>
+      <p style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 22px; line-height: 1.6;">
+        Randevu talebiniz hazırlandı. Kliniğimize en hızlı şekilde ulaştırabilmek için tercih ettiğiniz yöntemi seçiniz:
+      </p>
+      
+      <div style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
+        <button type="button" class="btn btn-whatsapp appointment-action-btn" onclick="submitAppointment('whatsapp')" style="padding: 13px;">
+          <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.077-1.127-.062-.265-.085-.595-.207-1.03-.397-1.848-.806-3.055-2.677-3.147-2.8-.093-.123-.746-.992-.746-1.893 0-.901.472-1.344.641-1.528.169-.184.368-.23.491-.23.123 0 .245.002.353.007.113.005.263-.043.412.316.153.37.521 1.272.568 1.365.046.092.077.2.015.323s-.092.2-.184.308c-.092.107-.193.24-.276.323-.092.093-.189.194-.082.378.107.184.478.788 1.026 1.274.706.628 1.3.822 1.485.914.184.092.292.077.4-.046.108-.123.461-.538.584-.723.123-.184.246-.153.415-.092.169.061 1.077.508 1.261.6.184.092.307.138.353.215.046.077.046.446-.098.851z"/>
+          </svg>
+          <span>WhatsApp ile Gönder (Hızlı &amp; Doğrudan)</span>
+          <span class="btn-nested-icon" aria-hidden="true">→</span>
+        </button>
+        
+        <button type="button" class="btn btn-primary appointment-action-btn" onclick="submitAppointment('email')" style="padding: 13px;">
+          <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+          </svg>
+          <span>E-Posta ile Gönder</span>
+          <span class="btn-nested-icon" aria-hidden="true">→</span>
+        </button>
+      </div>
+      
+      <p class="appointment-dispatch-note" style="margin-top: 14px;">
+        * Seçtiğiniz uygulama hazır taslakla açılacaktır. İletilmesini tamamlamak için &ldquo;Gönder&rdquo; tuşuna basınız.
+      </p>
+    </div>
+  </div>
 
   <!-- KVKK AYDINLATMA METNİ MODAL -->
   <div id="kvkk-modal-overlay" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="kvkk-modal-title">

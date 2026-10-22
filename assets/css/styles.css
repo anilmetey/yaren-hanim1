@@ -1620,6 +1620,233 @@ button, input, select, textarea {
 }
 
 /* ===================================================================
+   DUAL-ACTION APPOINTMENT SUBMISSION (WhatsApp & E-Posta Engine)
+   bursapsikologum.com Architecture - Zero Fake Submission
+   =================================================================== */
+.appointment-submit-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 14px;
+  margin-bottom: 8px;
+}
+
+@media (max-width: 640px) {
+  .appointment-submit-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+
+.appointment-action-btn {
+  width: 100%;
+  justify-content: center;
+  padding: 13px 18px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: transform var(--duration-fast) var(--ease-spring),
+              box-shadow var(--duration-fast) ease,
+              background var(--duration-fast) ease;
+}
+
+.appointment-action-btn:hover {
+  transform: translateY(-2px);
+}
+
+.appointment-action-btn:active {
+  transform: translateY(0);
+}
+
+.appointment-dispatch-note {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-align: center;
+  line-height: 1.55;
+  margin-top: 6px;
+  margin-bottom: 0;
+}
+
+.appointment-dispatch-note strong {
+  color: var(--rose-700);
+  font-weight: 700;
+}
+
+/* PENDING DISPATCH CONFIRMATION VIEW (bursapsikologum.com Pattern) */
+.booking-success-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px 10px;
+  gap: 18px;
+  animation: fadeInScale 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.booking-success-view.hidden {
+  display: none !important;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.booking-success-icon-wrap {
+  position: relative;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: var(--rose-50);
+  border: 2px solid var(--rose-300);
+  color: var(--rose-600);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(224, 90, 126, 0.16);
+  margin: 0 auto;
+}
+
+.booking-pulse-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #10B981;
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);
+  animation: badgePulse 2s infinite ease-in-out;
+}
+
+@keyframes badgePulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.85; }
+}
+
+.booking-success-header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+}
+
+.booking-success-tag {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 9999px;
+  background: rgba(224, 90, 126, 0.08);
+  border: 1px solid rgba(224, 90, 126, 0.22);
+  color: var(--rose-700);
+  font-size: 0.71875rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.booking-success-title {
+  font-family: var(--font-serif);
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.booking-success-desc {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  max-width: 440px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.booking-success-desc strong {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.booking-warning-box {
+  max-width: 480px;
+  width: 100%;
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: #FFFBEB;
+  border: 1.5px solid #FCD34D;
+  text-align: left;
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.08);
+}
+
+.booking-warning-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #92400E;
+  font-size: 0.78125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+}
+
+.booking-warning-text {
+  font-size: 0.8125rem;
+  color: #78350F;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.booking-warning-text strong {
+  color: #92400E;
+  font-weight: 700;
+}
+
+.booking-success-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: 6px;
+}
+
+/* FLOATING SITE TOAST */
+.site-toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: #1F171A;
+  color: #FFFFFF;
+  padding: 12px 22px;
+  border-radius: 9999px;
+  font-size: 0.84375rem;
+  font-weight: 500;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.32);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+}
+
+.site-toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ===================================================================
    MODAL COMPONENT (Ekol Detayları & KVKK)
    =================================================================== */
 .modal-overlay {

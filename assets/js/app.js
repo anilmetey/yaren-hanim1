@@ -338,15 +338,192 @@ function initKvkkModal() {
 }
 
 /* ===================================================================
-   6. RANDEVU & ÖN GÖRÜŞME FORMU KONTROLÜ
-   (Client Validation + XSS Sanitization + WhatsApp Hazırlayıcı)
+   6. RANDEVU & ÖN GÖRÜŞME FORMU KONTROLÜ (bursapsikologum.com Mimarisi)
+   (Dual Dispatch: WhatsApp & E-Posta + Taslak Onay Ekranı)
    =================================================================== */
+let lastAppointmentChannel = 'whatsapp';
+let lastAppointmentWaUrl = '';
+let lastAppointmentMailtoUrl = '';
+let lastAppointmentRawText = '';
+
+function showToast(msg) {
+  let toast = document.getElementById('site-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'site-toast';
+    toast.className = 'site-toast';
+    document.body.appendChild(toast);
+  }
+  toast.innerHTML = `
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#25D366" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    <span>${msg}</span>
+  `;
+  toast.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => {
+    toast.classList.remove('show');
+  }, 4000);
+}
+window.showToast = showToast;
+
+function showFormError(msg) {
+  const feedbackBox = document.getElementById('form-feedback');
+  if (feedbackBox) {
+    feedbackBox.textContent = msg;
+    feedbackBox.className = 'form-feedback-box error';
+    feedbackBox.style.display = 'block';
+    feedbackBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  } else {
+    alert(msg);
+  }
+}
+
+function sanitizeInput(str) {
+  return str.replace(/[&<>"'/]/g, (match) => {
+    const entities = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;',
+      '/': '&#x2F;'
+    };
+    return entities[match];
+  });
+}
+
+window.submitAppointment = function(channel) {
+  const form = document.getElementById('appointment-form');
+  if (!form) return;
+
+  const feedbackBox = document.getElementById('form-feedback');
+  const fullNameInput = form.querySelector('#full-name');
+  const phoneInput = form.querySelector('#phone');
+  const emailInput = form.querySelector('#email');
+  const serviceInput = form.querySelector('#service-type');
+  const sessionFormatInput = form.querySelector('#session-format');
+  const notesInput = form.querySelector('#notes');
+  const kvkkInput = form.querySelector('#kvkk-consent');
+
+  const fullName = fullNameInput ? sanitizeInput(fullNameInput.value.trim()) : '';
+  const phone = phoneInput ? sanitizeInput(phoneInput.value.trim()) : '';
+  const email = emailInput ? sanitizeInput(emailInput.value.trim()) : '';
+  const service = serviceInput ? sanitizeInput(serviceInput.value) : 'Yetişkin Terapisi (EMDR, Şema, BDT)';
+  const sessionFormat = sessionFormatInput ? sanitizeInput(sessionFormatInput.value) : 'Yüz Yüze (Levent Kliniği)';
+  const notes = notesInput ? sanitizeInput(notesInput.value.trim()) : '';
+  const kvkkConsent = kvkkInput ? kvkkInput.checked : false;
+
+  // Doğrulama Kontrolleri
+  if (fullName.length < 3) {
+    showFormError('Lütfen adınızı ve soyadınızı eksiksiz giriniz.');
+    if (fullNameInput) fullNameInput.focus();
+    return;
+  }
+
+  const cleanPhone = phone.replace(/[\s()\-+]/g, '');
+  if (cleanPhone.length < 10) {
+    showFormError('Lütfen geçerli bir telefon numarası giriniz (Örn: 0544 185 22 09).');
+    if (phoneInput) phoneInput.focus();
+    return;
+  }
+
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    showFormError('Lütfen geçerli bir e-posta adresi giriniz.');
+    if (emailInput) emailInput.focus();
+    return;
+  }
+
+  if (!kvkkConsent) {
+    showFormError('Randevu talebinizin işlenebilmesi için KVKK Aydınlatma Metni onay kutusunu işaretlemeniz gerekmektedir.');
+    if (kvkkInput) kvkkInput.focus();
+    return;
+  }
+
+  // Hata kutusunu temizle
+  if (feedbackBox) {
+    feedbackBox.style.display = 'none';
+    feedbackBox.className = 'form-feedback-box';
+  }
+
+  // Kanal Seçim Modalını Kapat (açıksa)
+  const choiceModal = document.getElementById('dispatch-choice-modal');
+  if (choiceModal) choiceModal.classList.remove('open');
+
+  lastAppointmentChannel = channel;
+  const channelName = channel === 'whatsapp' ? 'WhatsApp' : 'E-Posta';
+
+  // Panoya kopyalama için saf metin şablonu
+  lastAppointmentRawText = 
+`Klinik Psikolog Yaren Kiraz Güller - Randevu Talebi
+• Danışan: ${fullName}
+• Telefon: ${phone}
+• Terapi Türü: ${service}
+• Görüşme Şekli: ${sessionFormat}
+${email ? `• E-Posta: ${email}\n` : ''}${notes ? `• Not: ${notes}\n` : ''}
+Kliniğiniz tarafından değerlendirilip uygun seans planlaması için tarafıma dönüş yapılmasını rica ederim.`;
+
+  if (channel === 'whatsapp') {
+    const waText = 
+`Merhaba Klinik Psikolog Yaren Kiraz Güller,\n\nWeb siteniz üzerinden bir *randevu talebi* oluşturdum:\n- *Danışan:* ${fullName}\n- *Telefon:* ${phone}\n- *Tercih Edilen Hizmet:* ${service}\n- *Seans Şekli:* ${sessionFormat}\n${email ? `- *E-Posta:* ${email}\n` : ''}${notes ? `- *Not / Uygunluk:* ${notes}\n` : ''}\nKliniğiniz tarafından değerlendirilip uygun randevu planlaması için dönüş yapılmasını rica ederim.`;
+    lastAppointmentWaUrl = `https://wa.me/905441852209?text=${encodeURIComponent(waText)}`;
+    window.open(lastAppointmentWaUrl, '_blank');
+  } else {
+    const subject = `Randevu Talebi - ${fullName} (${service})`;
+    const body = 
+`Merhaba Klinik Psikolog Yaren Kiraz Güller,\n\nWeb siteniz üzerinden randevu talebinde bulunmak istiyorum:\n\n• Danışan Adı Soyadı: ${fullName}\n• Telefon Numarası: ${phone}\n• Danışmanlık / Terapi Türü: ${service}\n• Seans Şekli: ${sessionFormat}\n${email ? `• E-Posta: ${email}\n` : ''}${notes ? `• Not / Uygunluk Durumu: ${notes}\n` : ''}\n\nTalebin kliniğiniz tarafından değerlendirilip uygun randevu planlaması için tarafıma dönüş yapılmasını rica ederim.\n\nSaygılarımla,\n${fullName}`;
+    lastAppointmentMailtoUrl = `mailto:info@yarenkiraz.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = lastAppointmentMailtoUrl;
+  }
+
+  // Arayüzü Taslak Onay Ekranına Geçir (bursapsikologum.com modeli)
+  const formView = document.getElementById('booking-form-view');
+  const successView = document.getElementById('booking-step-success');
+  const pendingDesc = document.getElementById('pending-desc');
+
+  if (formView && successView) {
+    formView.classList.add('hidden');
+    successView.classList.remove('hidden');
+    if (pendingDesc) {
+      pendingDesc.innerHTML = `Sayın <strong>${fullName}</strong>, randevu metniniz <strong>${channelName}</strong> uygulamanıza aktarıldı.`;
+    }
+  }
+
+  showToast(`${channelName} taslağınız açıldı. Lütfen 'Gönder'e basınız.`);
+};
+
+window.reopenAppointmentDispatch = function() {
+  if (lastAppointmentChannel === 'whatsapp' && lastAppointmentWaUrl) {
+    window.open(lastAppointmentWaUrl, '_blank');
+  } else if (lastAppointmentMailtoUrl) {
+    window.location.href = lastAppointmentMailtoUrl;
+  }
+};
+
+window.copyAppointmentText = function() {
+  if (!lastAppointmentRawText) return;
+  navigator.clipboard.writeText(lastAppointmentRawText).then(() => {
+    const label = document.getElementById('copy-btn-label');
+    if (label) {
+      const original = label.innerText;
+      label.innerText = 'Kopyalandı! ✓';
+      setTimeout(() => { label.innerText = original; }, 2500);
+    }
+    showToast('Randevu metni panoya kopyalandı.');
+  }).catch(() => {
+    showToast('Metin kopyalandı.');
+  });
+};
+
+window.returnToBookingForm = function() {
+  const formView = document.getElementById('booking-form-view');
+  const successView = document.getElementById('booking-step-success');
+  if (successView) successView.classList.add('hidden');
+  if (formView) formView.classList.remove('hidden');
+};
+
 function initAppointmentForm() {
   const form = document.getElementById('appointment-form');
-  const feedbackBox = document.getElementById('form-feedback');
-  const submitBtn = document.getElementById('form-submit-btn');
-
-  if (!form || !feedbackBox || !submitBtn) return;
+  if (!form) return;
 
   const phoneInput = form.querySelector('#phone');
   if (phoneInput) {
@@ -360,93 +537,36 @@ function initAppointmentForm() {
     });
   }
 
-  let isSubmitting = false;
-
+  // Klavyeden Enter'a basıldığında tetiklenen form gönderimi
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    if (isSubmitting) return;
+    const fullName = (form.querySelector('#full-name')?.value || '').trim();
+    const phone = (form.querySelector('#phone')?.value || '').trim();
+    const kvkkConsent = form.querySelector('#kvkk-consent')?.checked;
 
-    // Alan Değerlerini Al ve Sanitize Et (XSS Engeli)
-    const fullName = sanitizeInput(form.querySelector('#full-name').value.trim());
-    const phone = sanitizeInput(form.querySelector('#phone').value.trim());
-    const email = sanitizeInput(form.querySelector('#email').value.trim());
-    const serviceType = sanitizeInput(form.querySelector('#service-type').value);
-    const sessionFormat = sanitizeInput(form.querySelector('#session-format').value);
-    const notes = sanitizeInput(form.querySelector('#notes').value.trim());
-    const kvkkConsent = form.querySelector('#kvkk-consent').checked;
-
-    // Doğrulama Kontrolleri
-    if (fullName.length < 3) {
-      showFeedback('Lütfen geçerli bir isim ve soyisim giriniz.', 'error');
+    // Bilgiler eksikse WhatsApp kanalından doğrulama hatasını tetikle
+    if (fullName.length < 3 || phone.length < 10 || !kvkkConsent) {
+      window.submitAppointment('whatsapp');
       return;
     }
 
-    const cleanPhone = phone.replace(/[\s()-]/g, '');
-    if (cleanPhone.length < 10) {
-      showFeedback('Lütfen geçerli bir telefon numarası giriniz (Örn: 0544 185 22 09).', 'error');
-      return;
+    // Bilgiler tamsa kullanıcıya gönderim kanalı seçtir
+    const modal = document.getElementById('dispatch-choice-modal');
+    if (modal) {
+      modal.classList.add('open');
+    } else {
+      window.submitAppointment('whatsapp');
     }
-
-    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      showFeedback('Lütfen geçerli bir e-posta adresi giriniz.', 'error');
-      return;
-    }
-
-    if (!kvkkConsent) {
-      showFeedback('Devam edebilmek için KVKK aydınlatma metnini onaylamanız gerekmektedir.', 'error');
-      return;
-    }
-
-    // Gönderim Durumu Başlat (Double Submit Koruması)
-    isSubmitting = true;
-    submitBtn.disabled = true;
-    const originalBtnText = submitBtn.innerHTML;
-    submitBtn.innerHTML = `
-      <span>Talebiniz Hazırlanıyor...</span>
-      <svg class="spinner" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation: spin 1s linear infinite;">
-        <circle cx="12" cy="12" r="10" stroke-opacity="0.25"></circle>
-        <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"></path>
-      </svg>
-    `;
-
-    setTimeout(() => {
-      // Başarılı Bildirimi
-      showFeedback('Randevu talebiniz başarıyla oluşturuldu. Klinik asistanımız en kısa sürede sizinle iletişime geçecektir.', 'success');
-      form.reset();
-      isSubmitting = false;
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = originalBtnText;
-
-      // WhatsApp doğrudan seans mesajı hazırlığı (İsteğe bağlı hızlı yönlendirme)
-      const waMessage = encodeURIComponent(
-        `Merhaba Klinik Psikolog Yaren Kiraz Güller,\n\nWeb siteniz üzerinden ön görüşme / randevu talebinde bulunmak istiyorum.\n\nİsim Soyisim: ${fullName}\nTelefon: ${phone}\nTercih Edilen Hizmet: ${serviceType}\nSeans Şekli: ${sessionFormat}\nNotlar: ${notes || 'Belirtilmedi'}`
-      );
-      
-      const promptWa = confirm('Randevu talebiniz kaydedildi. Dilerseniz bu bilgileri doğrudan WhatsApp hattımıza da iletebilirsiniz. WhatsApp açılsın mı?');
-      if (promptWa) {
-        window.open(`https://wa.me/905441852209?text=${waMessage}`, '_blank');
-      }
-    }, 900);
   });
 
-  function showFeedback(message, type) {
-    feedbackBox.textContent = message;
-    feedbackBox.className = `form-feedback-box ${type}`;
-    feedbackBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
-
-  function sanitizeInput(str) {
-    return str.replace(/[&<>"'/]/g, (match) => {
-      const entities = {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#39;',
-        '/': '&#x2F;'
-      };
-      return entities[match];
+  // Kanal Seçim Modal Kapatma Olayları
+  const choiceModal = document.getElementById('dispatch-choice-modal');
+  const choiceClose = document.getElementById('dispatch-choice-close-btn');
+  if (choiceModal && choiceClose) {
+    choiceClose.addEventListener('click', () => choiceModal.classList.remove('open'));
+    choiceModal.addEventListener('click', (e) => {
+      if (e.target === choiceModal) choiceModal.classList.remove('open');
     });
   }
 }
