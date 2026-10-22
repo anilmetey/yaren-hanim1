@@ -1,0 +1,21 @@
+{
+  "name": "Klinik Psikolog Yaren Kiraz Güller",
+  "short_name": "Yaren Kiraz",
+  "description": "Levent Beşiktaş Klinik Psikolojik Değerlendirme ve Psikoterapi",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#FCF8F9",
+  "theme_color": "#FCF8F9",
+  "icons": [
+    {
+      "src": "assets/images/yaren-kiraz-portrait.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "assets/images/yaren-kiraz-portrait.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
