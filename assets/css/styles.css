@@ -70,9 +70,9 @@ html {
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--warm-bg);
   color: var(--text-primary);
-  overflow-x: hidden;
-  max-width: 100vw;
-  width: 100%;
+  overflow-x: hidden !important;
+  max-width: 100% !important;
+  width: 100% !important;
 }
 
 body {
@@ -81,10 +81,11 @@ body {
   line-height: 1.65;
   background-color: var(--warm-bg);
   color: var(--text-primary);
-  overflow-x: hidden;
-  max-width: 100vw;
-  width: 100%;
+  overflow-x: hidden !important;
+  max-width: 100% !important;
+  width: 100% !important;
   position: relative;
+  touch-action: pan-y; /* Mobilde istenmeyen yatay sürüklemeyi/kaymayı kilitler */
 }
 
 .hero-section,
@@ -270,6 +271,14 @@ button, input, select, textarea {
   padding-right: 28px;
   position: relative;
   z-index: 2;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
 }
 
 /* ===================================================================
@@ -607,6 +616,9 @@ button, input, select, textarea {
   border-radius: var(--radius-outer);
   padding: 8px;
   box-shadow: var(--shadow-subtle);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   transition: transform var(--duration-normal) var(--ease-spring),
               box-shadow var(--duration-normal) var(--ease-smooth),
               border-color var(--duration-fast) ease;
@@ -624,8 +636,22 @@ button, input, select, textarea {
   box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.9);
   padding: 32px;
   height: 100%;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
+}
+
+@media (max-width: 768px) {
+  .double-bezel-outer {
+    padding: 5px;
+    border-radius: 20px;
+  }
+  .double-bezel-inner {
+    padding: 20px 14px;
+    border-radius: 16px;
+  }
 }
 
 /* 3D Tilt Card Perspective Container */
@@ -1623,32 +1649,60 @@ button, input, select, textarea {
    DUAL-ACTION APPOINTMENT SUBMISSION (WhatsApp & E-Posta Engine)
    bursapsikologum.com Architecture - Zero Fake Submission
    =================================================================== */
-.appointment-submit-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-top: 14px;
-  margin-bottom: 8px;
+#booking-steps-wrapper {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
-@media (max-width: 640px) {
+#booking-form-view {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.appointment-submit-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-top: 14px;
+  margin-bottom: 8px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+@media (min-width: 900px) {
   .appointment-submit-grid {
-    grid-template-columns: 1fr;
-    gap: 10px;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
   }
 }
 
 .appointment-action-btn {
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
-  padding: 13px 18px;
-  font-size: 0.875rem;
+  gap: 8px;
+  padding: 13px 14px;
+  font-size: 0.84375rem;
   font-weight: 600;
   border-radius: 14px;
   cursor: pointer;
+  white-space: normal;
+  text-align: center;
   transition: transform var(--duration-fast) var(--ease-spring),
               box-shadow var(--duration-fast) ease,
               background var(--duration-fast) ease;
+}
+
+.appointment-action-btn span {
+  white-space: normal;
+  line-height: 1.35;
 }
 
 .appointment-action-btn:hover {
@@ -1666,6 +1720,8 @@ button, input, select, textarea {
   line-height: 1.55;
   margin-top: 6px;
   margin-bottom: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .appointment-dispatch-note strong {
@@ -1679,8 +1735,12 @@ button, input, select, textarea {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 20px 10px;
-  gap: 18px;
+  padding: 16px 4px;
+  gap: 16px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
   animation: fadeInScale 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -1712,6 +1772,7 @@ button, input, select, textarea {
   justify-content: center;
   box-shadow: 0 8px 24px rgba(224, 90, 126, 0.16);
   margin: 0 auto;
+  flex-shrink: 0;
 }
 
 .booking-pulse-badge {
@@ -1737,6 +1798,8 @@ button, input, select, textarea {
   flex-direction: column;
   gap: 6px;
   align-items: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .booking-success-tag {
@@ -1758,14 +1821,17 @@ button, input, select, textarea {
   font-weight: 700;
   color: var(--text-primary);
   margin: 0;
+  line-height: 1.25;
 }
 
 .booking-success-desc {
   font-size: 0.875rem;
   color: var(--text-secondary);
   max-width: 440px;
+  width: 100%;
   margin: 0 auto;
   line-height: 1.6;
+  box-sizing: border-box;
 }
 
 .booking-success-desc strong {
@@ -1774,9 +1840,10 @@ button, input, select, textarea {
 }
 
 .booking-warning-box {
-  max-width: 480px;
+  max-width: 100%;
   width: 100%;
-  padding: 14px 18px;
+  box-sizing: border-box;
+  padding: 14px 16px;
   border-radius: 14px;
   background: #FFFBEB;
   border: 1.5px solid #FCD34D;
@@ -1801,6 +1868,7 @@ button, input, select, textarea {
   color: #78350F;
   line-height: 1.55;
   margin: 0;
+  word-break: break-word;
 }
 
 .booking-warning-text strong {
@@ -1810,25 +1878,50 @@ button, input, select, textarea {
 
 .booking-success-actions {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  align-items: stretch;
   gap: 10px;
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   margin-top: 6px;
+}
+
+@media (min-width: 600px) {
+  .booking-success-actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.booking-success-actions .btn {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  justify-content: center;
+  white-space: normal;
+  text-align: center;
+}
+
+@media (min-width: 600px) {
+  .booking-success-actions .btn {
+    width: auto;
+  }
 }
 
 /* FLOATING SITE TOAST */
 .site-toast {
   position: fixed;
-  bottom: 28px;
+  bottom: 24px;
   left: 50%;
   transform: translateX(-50%) translateY(80px);
   background: #1F171A;
   color: #FFFFFF;
-  padding: 12px 22px;
+  padding: 12px 18px;
   border-radius: 9999px;
-  font-size: 0.84375rem;
+  font-size: 0.8125rem;
   font-weight: 500;
   box-shadow: 0 10px 32px rgba(0, 0, 0, 0.32);
   z-index: 10000;
@@ -1837,6 +1930,10 @@ button, input, select, textarea {
   gap: 10px;
   opacity: 0;
   pointer-events: none;
+  width: max-content;
+  max-width: calc(100vw - 32px);
+  box-sizing: border-box;
+  text-align: center;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
 }
 
@@ -1855,34 +1952,48 @@ button, input, select, textarea {
   background: rgba(31, 23, 26, 0.6);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  z-index: 200;
+  z-index: 2000;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
   opacity: 0;
+  visibility: hidden; /* Kapalıyken mobilde kesinlikle görünmez & yatay taşma yapmaz */
   pointer-events: none;
-  transition: opacity var(--duration-normal) ease;
+  transition: opacity var(--duration-normal) ease, visibility var(--duration-normal) ease;
 }
 
 .modal-overlay.open {
   opacity: 1;
+  visibility: visible;
   pointer-events: auto;
 }
 
 .modal-container {
   background: #FFFFFF;
   width: 100%;
-  max-width: 640px;
+  max-width: 580px;
   max-height: 90vh;
   overflow-y: auto;
-  border-radius: 28px;
-  padding: 36px;
+  border-radius: 26px;
+  padding: 32px 24px;
   position: relative;
   border: 1px solid rgba(224, 90, 126, 0.2);
   box-shadow: var(--shadow-dropdown);
+  box-sizing: border-box;
   transform: scale(0.94) translateY(12px);
   transition: transform var(--duration-normal) var(--ease-spring);
+}
+
+@media (max-width: 640px) {
+  .modal-overlay {
+    padding: 12px;
+  }
+  .modal-container {
+    padding: 24px 16px;
+    border-radius: 20px;
+    max-height: 88vh;
+  }
 }
 
 .modal-overlay.open .modal-container {
@@ -2484,20 +2595,22 @@ button, input, select, textarea {
     top: 0;
     right: 0;
     width: 88%;
-    max-width: 360px;
+    max-width: 340px;
     height: 100dvh;
     height: 100vh;
     background: #FFFFFF;
     box-shadow: -14px 0 50px rgba(40, 20, 25, 0.18);
     z-index: 9999;
     transform: translateX(100%);
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    visibility: hidden; /* Kapalıyken mobilde kesinlikle görünmez & yatay taşma/kayma yapmaz */
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s ease;
     pointer-events: none;
     overflow: hidden;
   }
 
   .mobile-drawer.open {
     transform: translateX(0);
+    visibility: visible;
     pointer-events: auto;
   }
 
@@ -2720,6 +2833,39 @@ button, input, select, textarea {
   .site-header {
     top: 8px;
     padding: 0 10px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .nav-island {
+    padding: 6px 12px;
+    gap: 8px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .brand-name {
+    font-size: 0.9375rem;
+  }
+  .brand-title {
+    font-size: 0.65625rem;
+  }
+  .brand-avatar-img {
+    width: 36px;
+    height: 36px;
+  }
+  .form-field {
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .form-input,
+  .form-select,
+  .form-textarea {
+    font-size: 16px; /* iOS Safari otomatik form zoom'unu engeller */
+    max-width: 100%;
+    box-sizing: border-box;
   }
   .hero-section {
     padding-top: calc(var(--header-height) + 16px);
