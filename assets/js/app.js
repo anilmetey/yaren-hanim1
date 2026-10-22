@@ -347,22 +347,7 @@ let lastAppointmentMailtoUrl = '';
 let lastAppointmentRawText = '';
 
 function showToast(msg) {
-  let toast = document.getElementById('site-toast');
-  if (!toast) {
-    toast = document.createElement('div');
-    toast.id = 'site-toast';
-    toast.className = 'site-toast';
-    document.body.appendChild(toast);
-  }
-  toast.innerHTML = `
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#25D366" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-    <span>${msg}</span>
-  `;
-  toast.classList.add('show');
-  clearTimeout(window._toastTimer);
-  window._toastTimer = setTimeout(() => {
-    toast.classList.remove('show');
-  }, 4000);
+  // Sessiz ve güvenli - ekranda zıplama/taşma yapan floating toast kaldırıldı
 }
 window.showToast = showToast;
 
@@ -372,7 +357,6 @@ function showFormError(msg) {
     feedbackBox.textContent = msg;
     feedbackBox.className = 'form-feedback-box error';
     feedbackBox.style.display = 'block';
-    feedbackBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   } else {
     alert(msg);
   }
