@@ -747,16 +747,20 @@ function initSplashScreen() {
   const splash = document.getElementById('splash-screen');
   if (!splash) return;
 
+  // Ana sayfada 1.5s, menüden alt sayfalara geçildiğinde süresi tam yarısı (750ms)
+  const isFast = splash.classList.contains('splash-fast') || splash.getAttribute('data-speed') === 'fast';
+  const duration = isFast ? 750 : 1500;
+  const fadeOutDelay = isFast ? 400 : 800;
+
   function dismissSplash() {
     if (splash.classList.contains('fade-out')) return;
     splash.classList.add('fade-out');
     setTimeout(() => {
       splash.style.display = 'none';
-    }, 800);
+    }, fadeOutDelay);
   }
 
-  // 1.5 saniye sonra lüks ve yumuşak kayboluş
-  const autoDismiss = setTimeout(dismissSplash, 1500);
+  const autoDismiss = setTimeout(dismissSplash, duration);
 
   // Ziyaretçi beklemek istemezse tıklayarak anında geçebilir
   splash.addEventListener('click', () => {
