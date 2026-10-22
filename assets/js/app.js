@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initBreathingExercise();
   initSchemaCompass();
   initBdtFlipCards();
+  initDoktorsitesiFrameToggle();
 });
 
 /* ===================================================================
@@ -996,6 +997,44 @@ function initBdtFlipCards() {
     });
   });
 }
+
+/* ===================================================================
+   14. DOKTORSİTESİ SAYFA İÇİ CANLI TAKVİM TOGGLE
+   =================================================================== */
+function initDoktorsitesiFrameToggle() {
+  const toggleButtons = document.querySelectorAll('.btn-toggle-doktorsitesi-frame');
+  if (toggleButtons.length === 0) return;
+
+  toggleButtons.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const card = this.closest('.doktorsitesi-booking-card');
+      if (!card) return;
+      const container = card.querySelector('.doktorsitesi-frame-container');
+      const iframe = card.querySelector('iframe.doktorsitesi-iframe');
+      const textSpan = this.querySelector('.toggle-label');
+      const caret = this.querySelector('.embed-caret');
+
+      if (!container) return;
+
+      const isHidden = container.style.display === 'none' || !container.style.display;
+      if (isHidden) {
+        container.style.display = 'block';
+        if (iframe && iframe.dataset.src && !iframe.getAttribute('src')) {
+          iframe.src = iframe.dataset.src;
+        }
+        if (textSpan) textSpan.textContent = 'Canlı Takvim Görünümünü Kapat';
+        if (caret) caret.style.transform = 'rotate(180deg)';
+        this.setAttribute('aria-expanded', 'true');
+      } else {
+        container.style.display = 'none';
+        if (textSpan) textSpan.textContent = 'Sayfa İçinde Doktorsitesi Profil & Takvimini Görüntüle';
+        if (caret) caret.style.transform = 'rotate(0deg)';
+        this.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+}
+
 
 
 

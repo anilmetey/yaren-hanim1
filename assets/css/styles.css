@@ -3375,7 +3375,7 @@ button, input, select, textarea {
   color: #FFFFFF !important;
 }
 
-/* Doktorsitesi Online Takvim Kartı */
+/* Doktorsitesi Online Takvim & Doğrudan Uzman Profili Kartı */
 .doktorsitesi-booking-card {
   background: linear-gradient(145deg, #FFFFFF, rgba(253, 242, 244, 0.85));
   border: 1.5px solid rgba(224, 90, 126, 0.28);
@@ -3398,57 +3398,171 @@ button, input, select, textarea {
   background: linear-gradient(90deg, #00A896, #E05A7E);
 }
 
-.doktorsitesi-header {
+.doktorsitesi-profile-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin-bottom: 14px;
+  gap: 18px;
+  margin-bottom: 16px;
 }
 
-.doktorsitesi-badge-wrap {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.doktorsitesi-icon-box {
-  width: 46px;
-  height: 46px;
-  border-radius: 12px;
-  background: #E6F7F5;
-  color: #00A896;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-size: 1.1rem;
-  box-shadow: 0 3px 10px rgba(0, 168, 150, 0.18);
+.doktorsitesi-expert-avatar-wrap {
+  position: relative;
+  width: 72px;
+  height: 72px;
   flex-shrink: 0;
 }
 
-.doktorsitesi-title-group h4 {
-  font-family: var(--font-serif);
-  font-size: 1.25rem;
-  color: var(--text-primary);
-  margin: 0 0 2px 0;
-  line-height: 1.25;
+.doktorsitesi-expert-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2.5px solid #00A896;
+  box-shadow: 0 4px 14px rgba(0, 168, 150, 0.25);
+  display: block;
 }
 
-.doktorsitesi-title-group span {
-  font-size: 0.78125rem;
-  color: #00A896;
-  font-weight: 600;
+.doktorsitesi-online-status {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 15px;
+  height: 15px;
+  background: #10B981;
+  border: 2.5px solid #FFFFFF;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3);
+  animation: onlinePulse 2.2s infinite;
+}
+
+@keyframes onlinePulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
+  70% { transform: scale(1); box-shadow: 0 0 0 7px rgba(16, 185, 129, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.doktorsitesi-expert-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.doktorsitesi-platform-tag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+
+.doktorsitesi-badge-official {
+  background: #E6F7F5;
+  color: #007A6C;
+  font-size: 0.71875rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 9999px;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.doktorsitesi-rating-stars {
+  color: #D97706;
+  font-size: 0.78125rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.doktorsitesi-expert-name {
+  font-family: var(--font-serif);
+  font-size: 1.3125rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 5px 0;
+  line-height: 1.3;
+}
+
+.doktorsitesi-expert-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.45;
+}
+
+.doktorsitesi-expert-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.doktorsitesi-action-group {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 18px 0;
+}
+
+.btn-doktorsitesi {
+  background: linear-gradient(135deg, #00A896, #028090);
+  color: #FFFFFF !important;
+  border: none;
+  padding: 13px 24px;
+  font-weight: 600;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  box-shadow: 0 4px 16px rgba(0, 168, 150, 0.32);
+  transition: all var(--duration-fast) var(--ease-spring);
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 0.9375rem;
+}
+
+.btn-doktorsitesi:hover {
+  background: linear-gradient(135deg, #028090, #006b77);
+  box-shadow: 0 6px 22px rgba(0, 168, 150, 0.48);
+  transform: translateY(-2px);
+  color: #FFFFFF !important;
+}
+
+.btn-doktortakvimi-secondary {
+  background: #FFFFFF;
+  color: #007A6C !important;
+  border: 1.5px solid #00A896;
+  padding: 11px 20px;
+  font-weight: 600;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 8px rgba(0, 168, 150, 0.08);
+  transition: all var(--duration-fast) var(--ease-spring);
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.btn-doktortakvimi-secondary:hover {
+  background: #E6F7F5;
+  border-color: #007A6C;
+  color: #005F54 !important;
+  transform: translateY(-1px);
 }
 
 .doktorsitesi-features {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 10px;
-  margin: 16px 0 20px 0;
+  margin: 14px 0 16px 0;
 }
 
 .doktorsitesi-feature-item {
@@ -3464,27 +3578,116 @@ button, input, select, textarea {
   flex-shrink: 0;
 }
 
-.btn-doktorsitesi {
-  background: linear-gradient(135deg, #00A896, #028090);
-  color: #FFFFFF !important;
-  border: none;
-  padding: 12px 22px;
+/* Sayfa İçi Canlı Takvim / Profil Görüntüleme */
+.doktorsitesi-embed-toggle-wrap {
+  margin-top: 14px;
+}
+
+.btn-toggle-doktorsitesi-frame {
+  background: rgba(0, 168, 150, 0.08);
+  border: 1px dashed rgba(0, 168, 150, 0.45);
+  color: #007A6C;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-size: 0.8125rem;
   font-weight: 600;
-  border-radius: 9999px;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 4px 14px rgba(0, 168, 150, 0.3);
-  transition: all var(--duration-fast) var(--ease-spring);
-  text-decoration: none;
   cursor: pointer;
+  transition: all 0.25s ease;
+  width: 100%;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
-.btn-doktorsitesi:hover {
-  background: linear-gradient(135deg, #028090, #006b77);
-  box-shadow: 0 6px 20px rgba(0, 168, 150, 0.45);
-  transform: translateY(-2px);
-  color: #FFFFFF !important;
+.btn-toggle-doktorsitesi-frame:hover {
+  background: rgba(0, 168, 150, 0.16);
+  border-color: #00A896;
+  color: #005F54;
+}
+
+.btn-toggle-doktorsitesi-frame .embed-caret {
+  transition: transform 0.25s ease;
+  font-size: 0.75rem;
+}
+
+.doktorsitesi-frame-container {
+  margin-top: 14px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 168, 150, 0.25);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+  background: #FFFFFF;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.doktorsitesi-frame-bar {
+  background: #F3F4F6;
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #E5E7EB;
+  font-size: 0.75rem;
+  color: #4B5563;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.doktorsitesi-frame-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.doktorsitesi-frame-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.doktorsitesi-frame-dot.red { background: #EF4444; }
+.doktorsitesi-frame-dot.yellow { background: #F59E0B; }
+.doktorsitesi-frame-dot.green { background: #10B981; }
+
+.doktorsitesi-frame-url {
+  font-family: monospace;
+  font-size: 0.75rem;
+  color: #374151;
+  background: #FFFFFF;
+  padding: 2px 10px;
+  border-radius: 6px;
+  border: 1px solid #E5E7EB;
+}
+
+.doktorsitesi-frame-external {
+  color: #007A6C;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.75rem;
+}
+
+.doktorsitesi-frame-external:hover {
+  text-decoration: underline;
+}
+
+iframe.doktorsitesi-iframe {
+  width: 100%;
+  height: 560px;
+  border: none;
+  display: block;
+  box-sizing: border-box;
+  background: #FAFAFA;
+}
+
+.doktorsitesi-footer-note {
+  font-size: 0.78125rem;
+  color: var(--text-muted);
+  margin: 14px 0 0 0;
+  line-height: 1.55;
 }
 
 .appointment-channels-divider {
@@ -3516,23 +3719,44 @@ button, input, select, textarea {
 
 @media (max-width: 640px) {
   .doktorsitesi-booking-card {
-    padding: 18px 16px;
+    padding: 18px 14px;
   }
-  .doktorsitesi-header {
-    flex-direction: column;
+  .doktorsitesi-profile-row {
+    flex-direction: row;
+    gap: 12px;
     align-items: flex-start;
   }
-  .doktorsitesi-features {
-    grid-template-columns: 1fr;
-    gap: 8px;
-    margin: 12px 0 16px 0;
+  .doktorsitesi-expert-avatar-wrap {
+    width: 58px;
+    height: 58px;
   }
-  .btn-doktorsitesi {
+  .doktorsitesi-expert-name {
+    font-size: 1.0625rem;
+  }
+  .doktorsitesi-expert-meta {
+    font-size: 0.75rem;
+    gap: 6px;
+  }
+  .doktorsitesi-action-group {
+    flex-direction: column;
+    gap: 10px;
+    margin: 14px 0;
+  }
+  .btn-doktorsitesi,
+  .btn-doktortakvimi-secondary {
     width: 100%;
     justify-content: center;
     font-size: 0.84375rem;
     padding: 11px 16px;
     text-align: center;
-    white-space: normal;
+    box-sizing: border-box;
+  }
+  .doktorsitesi-features {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin: 12px 0 14px 0;
+  }
+  iframe.doktorsitesi-iframe {
+    height: 480px;
   }
 }
